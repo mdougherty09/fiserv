@@ -97,3 +97,11 @@ Included:
      Some of you may have heard me talk about fabric.  It is a good general purpose sysAdmin tool framwork.  Written in a very simple python'ish way.  You can use it to give people a common way to do some day to day tasks.  I am including a fabfile that I had started working on for Fiserv.  
      To install fabric, just run 'pip install fabric'.  There is also a plugin for the f5 which can be very useful when working with the API.  To install that run 'pip install pycontrol'.
      For more information on this tool, please visit http://www.fabfile.org
+
+--------------
+
+- TLS/SSL termination on the F5
+
+     Very detailed instructions can be found at https://www.lullabot.com/articles/setting-up-ssl-offloading-termination-on-an-f5-bigip-load-balancer
+
+--------------
