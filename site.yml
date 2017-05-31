@@ -1,0 +1,45 @@
+---
+
+## Docker host build ##
+- hosts: docker
+  sudo: true
+  roles:
+    - repos
+    - base
+    - users
+    - python
+    - docker
+
+## Traditional LAMP stack build ##
+- hosts: webservers
+  sudo: true
+  vars:
+    document_root: /var/www/html
+    mysql_root_password: password
+  handlers:
+    - name: reload apache
+      service: name=httpd state=reloaded
+  roles:
+    - repos
+    - base
+    - users
+    - webserver
+    - database
+
+## Ansible / Rundeck machine build ##
+- hosts: controllers
+  sudo: true
+  roles:
+    - repos
+    - base
+    - python
+    - ansible
+    - rundeck
+
+- hosts: test
+  sudo: true
+  roles:
+    - repos
+    - base
+    - python
+    - users
