@@ -1,3 +1,4 @@
 ---
-- include: base.yml
+- include: installPackages.yml
 - include: selinux.yml
+- include: firewalld.yml
