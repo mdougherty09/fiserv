@@ -1,0 +1,34 @@
+---
+- name: install apache
+  yum: name=httpd state=present
+
+- name: Enable apache to start on reboot
+  command: systemctl enable httpd.service
+
+- name: Copy across new virtual host
+  template:
+    src=httpd.conf.j2
+    dest=/etc/httpd/conf/httpd.conf
+  notify:
+    - reload apache
+
+- name: Copy across new virtual host
+  template:
+    src=virtual-hosts.conf.j2
+    dest=/etc/httpd/conf.d/vagrant.conf
+  notify:
+    - reload apache
+
+- name: Remove default virtual host
+  file:
+    path=/etc/httpd/conf.d/welcome.conf
+    state=absent
+  notify:
+    - reload apache
+
+- name: Enable new vagrant virtual host
+  file:
+    src=/etc/httpd/conf.d/vagrant.conf
+    dest=/etc/httpd/conf.d/vagrant.conf
+  notify:
+    - reload apache

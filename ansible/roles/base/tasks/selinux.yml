@@ -1,0 +1,3 @@
+---
+- name: set selinux to disabled
+  selinux: state=disabled

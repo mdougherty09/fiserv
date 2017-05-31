@@ -1,0 +1,50 @@
+---
+
+- name: add appuser group
+  group: name=appuser state=present
+
+- name: Create ansible user
+  user: name=ansible groups=appuser
+
+- name: Create rundeck user
+  user: name=rundeck groups=ansible,appuser
+
+- name: change permissions on home directories
+  file: path={{ item }} group=appuser mode=755
+  with_items:
+      - /home/ansible
+      - /home/rundeck
+
+- name: add ansible .ssh directory
+  file: path=/home/ansible/.ssh owner=ansible group=appuser state=directory mode=0700 
+
+- name: add rundeck .ssh directory
+  file: path=/home/rundeck/.ssh owner=rundeck group=appuser state=directory mode=0700 
+
+- name: add root .ssh directory
+  file: path=/root/.ssh owner=root group=root state=directory mode=0700 
+
+- name: copy auth_keys for rundeck
+  template:
+    src=rundeck_key.j2
+    dest=/home/rundeck/.ssh/authorized_keys
+    owner=rundeck
+    group=rundeck
+    mode=0600
+
+- name: copy auth_keys for ansible
+  template:
+    src=ansible_key.j2
+    dest=/home/ansible/.ssh/authorized_keys
+    owner=ansible
+    group=ansible
+    mode=0600
+
+- name: copy auth_keys for root
+  template:
+    src=root_key.j2
+    dest=/root/.ssh/authorized_keys
+    owner=root
+    group=root
+    mode=0600
+

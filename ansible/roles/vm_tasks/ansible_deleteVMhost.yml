@@ -1,0 +1,37 @@
+---
+- name: delete a VM
+#  hosts: localhost
+#  connection: local
+  vars_prompt:
+    - name: "vcenter_host"
+      prompt: "Enter vcenter host"
+      private: no
+      #default: "vcsa" ## We may be going in this direction
+    - name: "vcenter_user"
+      prompt: "Enter vcenter username"
+      private: no
+    - name: "vcenter_pass"
+      prompt: "Enter vcenter password"
+      private: yes
+    - name: "vmhostName"
+      prompt: "Enter the FQDN of the host to be removed"
+      private: no
+#########################################################################
+## added the next two prompts for future development
+#########################################################################
+#    - name: "instance_name"
+#      prompt: "Enter Instance Name (ie m0, m1, etc)"
+#      private: no
+#    - name: "instance_prefix"
+#      prompt: "Enter the instance prefix (ie bp1, fp2 etc)"
+#      private: no
+
+    tasks:
+      vsphere_guest:
+        vcenter_hostname: "{{ vcenter_host }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        guest: "{{ vmhostName }}"
+        state: absent
+        force: yes
+

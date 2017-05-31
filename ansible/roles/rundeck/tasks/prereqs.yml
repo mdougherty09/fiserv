@@ -1,0 +1,6 @@
+---
+- name: Insatll prereq (xmlstarlet and coreutils)
+  yum: name={{ item }} state=present
+  with_items:
+      - xmlstarlet
+      - coreutils

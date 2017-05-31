@@ -1,0 +1,12 @@
+<VirtualHost *:80>
+  ServerName localhost
+  ServerAdmin webmaster@localhost
+  DocumentRoot {{ document_root }}
+
+  <Directory {{ document_root }}>
+    Require all granted
+  </Directory>
+
+  ErrorLog /etc/httpd/logs/error.log
+  CustomLog /etc/httpd/logs/access.log combined
+</VirtualHost>

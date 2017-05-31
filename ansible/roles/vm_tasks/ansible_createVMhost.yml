@@ -1,0 +1,47 @@
+---
+- name: create some vms
+#  hosts: localhost
+#  connection: local
+  vars_prompt:
+    - name: "vcenter_host"
+      prompt: "Enter vcenter host"
+      private: no
+      #default: "vcsa" ## We may be going in this direction
+    - name: "vcenter_user"
+      prompt: "Enter vcenter username"
+      private: no
+    - name: "vcenter_pass"
+      prompt: "Enter vcenter password"
+      private: yes
+#########################################################################
+## added the next two prompts for future development
+#########################################################################
+#    - name: "instance_name"
+#      prompt: "Enter Instance Name (ie m0, m1, etc)"
+#      private: no
+#    - name: "instance_prefix"
+#      prompt: "Enter the instance prefix (ie bp1, fp2 etc)"
+#      private: no
+          
+    tasks:
+    - name: "Deploy guests from template"
+      vsphere_guest:
+        vcenter_hostname: "{{ vcenter_host }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        guest: "{{ item }}"
+        from_template: yes
+        template_src: centos_68_Template
+        cluster: WhateverTheClusterNameIs
+        resource_pool: "/unix-admin"
+        vm_extra_config:
+        folder: OptionalFolder
+#########################################################################
+## Two ways of doing this.
+## 1. provide a group from the host file
+## 2. create multiple files and use the extra-vars on the command line
+## -- example '--extra-vars "item=portalapp.yml"'
+#########################################################################
+       #with_items: "{{ groups['portalapp'] }}"
+       with_items: "{{ serverlist }}"
+

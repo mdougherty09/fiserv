@@ -1,0 +1,3 @@
+---
+- name: Add repository
+  get_url: dest=/etc/yum.repos.d/rerun.repo url=https://bintray.com/rerun/rerun-rpm/rpm

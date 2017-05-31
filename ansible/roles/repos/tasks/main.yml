@@ -1,0 +1,5 @@
+---
+- include: epel.yml
+- include: rundeck_repo.yml
+- include: rundeck_rerun.yml
+- include: mysql.yml

@@ -1,0 +1,6 @@
+---
+- name: install python-devel from epel
+  yum: name=python-devel state=present
+
+- name: install python-pip from epel
+  yum: name=python-pip state=present

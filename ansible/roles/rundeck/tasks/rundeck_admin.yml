@@ -1,0 +1,11 @@
+---
+- name: Install rundeck-admin software
+  yum: name=rerun-rundeck-admin state=present
+
+- name: export url variable
+  lineinfile: dest=/var/lib/rundeck/.bashrc regexp='# User' insertafter='# User' line='export RUNDECK_URL=http://{{ ansible_enp0s8.ipv4.address }}:4440 RUNDECK_USER=admin RUNDECK_PASSWORD=admin'
+
+- name: change permissions of the rundeck home
+  file: path=/var/lib/rundeck/ owner=rundeck group=rundeck recurse=yes mode=0755
+  notify:
+    - reload rundeck

@@ -1,0 +1,8 @@
+---
+#{{ ansible_managed }}
+ListenAddress {{ ansible_ssh_host }}
+PermitRootLogin without-password
+AuthorizedKeysFile /etc/ssh/authorized_keys/%u
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+UsePAM yes

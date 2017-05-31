@@ -1,0 +1,37 @@
+---
+- name: vmotion some vms
+#  hosts: localhost
+#  connection: local
+  vars_prompt:
+    - name: "vcenter_host"
+      prompt: "Enter vcenter host"
+      private: no
+    - name: "vcenter_user"
+      prompt: "Enter vcenter username"
+      private: no
+    - name: "vcenter_pass"
+      prompt: "Enter vcenter password"
+      private: yes
+    - name: "dest_host"
+      prompt: "enter the destination vmware host"
+      private: no
+
+    tasks:
+    - name: "VMotion multiple guests"
+      local_action:
+        module_name: vmware_vmotion
+        vcenter_hostname: "{{ vcenter_host }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        validate_certs: False
+        vm_name: "{{ item }}"
+        destination_host: "{{ dest_host }}"
+        
+#########################################################################
+## Two ways of doing this.
+## 1. provide a group from the host file
+## 2. create multiple files and use the extra-vars on the command line
+## -- example '--extra-vars "item=portalapp.yml"'
+#########################################################################
+       #with_items: "{{ groups['portalapp'] }}"
+       with_items: "{{ serverlist }}"

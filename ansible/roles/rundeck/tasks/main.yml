@@ -1,0 +1,4 @@
+---
+- include: prereqs.yml
+- include: rundeck.yml
+- include: rundeck_admin.yml

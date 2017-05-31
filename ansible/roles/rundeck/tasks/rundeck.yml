@@ -1,0 +1,46 @@
+---
+- name: Install the rundeck code
+  yum: name=rundeck state=present
+
+- name: Install the java code
+  yum: name=java-1.7.0 state=present
+
+- name: install plugins
+  become: true
+  get_url: url={{ item }} dest=/var/lib/rundeck/libext/ 
+  with_items:
+      - https://github.com/rundeck-plugins/nexus-step-plugins/releases/download/v1.0.0/nexus-step-plugins-1.0.0.jar
+      - https://github.com/rundeck-plugins/puppet-apply-step/releases/download/v1.0.0/puppet-apply-step-1.0.0.zip
+      - https://github.com/rundeck-plugins/jira-workflow-step/releases/download/v1.0.0/jira-workflow-step-1.0.0.jar
+      - https://github.com/rundeck-plugins/jira-notification/releases/download/v1.0.0/jira-notification-1.0.0.jar
+      - https://github.com/rundeck-plugins/jabber-notification/releases/download/v1.0/jabber-notification-1.0.jar
+      - https://raw.githubusercontent.com/rundeck-plugins/pagerduty-notification/master/src/PagerDutyNotification.groovy
+      - https://github.com/rundeck-plugins/rundeck-ec2-nodes-plugin/releases/download/1.5/rundeck-ec2-nodes-plugin-1.5.jar
+      - https://bintray.com/artifact/download/rundeck-plugins/rerun-remote-node-steps/file-util/1.0.0/file-util.zip
+      - https://bintray.com/artifact/download/rundeck-plugins/rerun-remote-node-steps/waitfor/1.1.0/waitfor.zip
+      - https://github.com/Batix/rundeck-ansible-plugin/releases/download/1.2.4/ansible-plugin-1.2.4.jar
+      - http://search.maven.org/remotecontent?filepath=com/hbakkum/rundeck/plugins/rundeck-hipchat-plugin/1.6.0/rundeck-hipchat-plugin-1.6.0.jar
+
+- name: Reset the home directory permission as it comes group writeable
+  file: path=/var/lib/rundeck owner=rundeck group=rundeck mode=0766
+
+- name: Reset the home directory permission as it comes group writeable
+  file: path=/var/lib/rundeck/libext owner=rundeck group=rundeck mode=0766
+
+- name: set permissions on the plugins
+  file: path=/var/lib/rundeck/libext owner=rundeck group=rundeck mode=0766
+
+- name: Copy rundeck.config
+  template:
+    src=rundeck_config.j2
+    dest=/etc/rundeck/rundeck-config.properties
+
+- name: Copy policies
+  copy: src={{ item }} dest=/etc/rundeck/ owner=rundeck group=rundeck mode=0444
+  with_fileglob:
+        - roles/rundeck/files/*.aclpolicy
+
+- name: Copy realm.properties
+  copy: src=roles/rundeck/files/realm.properties dest=/etc/rundeck/realm.properties owner=rundeck group=rundeck mode=0644
+  notify:
+    - reload rundeck
