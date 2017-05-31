@@ -86,4 +86,14 @@ Included:
 
 --------------
 
- - vagrant (Vagrant file example for VirtualBox and a provider section for VCenter)
+ - Vagrant (Vagrant file example for VirtualBox and a provider section for VCenter)
+
+     Start using this in tandem with your ansible environment.  It will give you a way to test your code as it is being deployed.  Take a look at the example and check out the provisioner sections.  You will see that I am not just using Vagrant to launch machines, but I am also using ansible to provision the machines with patches/apps/etc...
+
+--------------
+
+ - Fabric
+
+     Some of you may have heard me talk about fabric.  It is agood general purpose sysAdmin tool framwork.  Written in a very simple python'ish way.  You can use it to give people a common way to do some day to day tasks.  I am including a fabfile that I had started working on for Fiserv.  
+     To install fabric, just run 'pip install fabric'.  There is also a plugin for the f5 which can be very useful when working with the API.  To install that run 'pip install pycontrol'.
+     For more information on this tool, please visit http://www.fabfile.org
