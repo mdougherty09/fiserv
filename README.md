@@ -13,13 +13,13 @@ Included:
       -> jenkins (Out of the box install of Jenkins CI)
       -> tomcat (simple tomcat deployment)
 
-   -- Thoughts on Ansible setup and advise.
+   -- Thoughts on Ansible setup and advice.
 
-         How the structure is layed down in the beginning is crucial.  Think about your environment as a whole and have it controled by a single YAML file.  We need to make sure that there are no one-off changes to machines.  If something needs to be fixed in a hurry, I get it.  Change the file and immediately make sure that change is reflected in code or it will be overwritten eventually and nobody will know why.
+      How the structure is laid down in the beginning is crucial.  Think about your environment as a whole and have it controled by a single YAML file.  We need to make sure that there are no one-off changes to machines.  If something needs to be fixed in a hurry, I get it.  Change the file and immediately make sure that change is reflected in code or it will be overwritten eventually and nobody will know why.
 
-         Learn to standardize a "type of machine" and group your roles for that specific type accordingly.  All servers should have the same base packages, but the machine types will tell you what add-on services and packages are needed for that class of machine.
+      Learn to standardize a "type of machine" and group your roles for that specific type accordingly.  All servers should have the same base packages, but the machine types will tell you what add-on services and packages are needed for that class of machine.
 
-         Keep your playbooks small.  Don't try to do too much in one playbook, you will find ways and needs to re-use bits of code all of the time.  Also, it is much easier to write smaller blocks of code for people who may not be experts in the subject.  You will also find debug to be simpler when dealing with small chunks instead of a huge monolythic peice of code.
+      Keep your playbooks small.  Don't try to do too much in one playbook, you will find ways and needs to re-use bits of code all of the time.  Also, it is much easier to write smaller blocks of code for people who may not be experts in the subject.  You will also find debug to be simpler when dealing with small chunks instead of a huge monolythic peice of code.
 
          Try to keep with a directory structure like the following:
               inventories/
