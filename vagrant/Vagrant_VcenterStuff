@@ -1,0 +1,12 @@
+provider :vcenter do |v|
+      v.hostname = vconfig['vcenter_hostname']
+      v.username = vconfig['vcenter_username']
+      v.password = vconfig['vcenter_password']
+      v.folder_name = vconfig['vcenter_folder']
+      v.datacenter_name = 'EDIT_ME'
+      v.computer_name = 'EDIT_ME'
+      v.datastore_name = 'EDIT_ME'
+      v.network_name = 'EDIT_ME'
+      v.num_cpu = '2'
+      v.memory = '4096'
+    end

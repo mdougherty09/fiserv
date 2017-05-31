@@ -1,0 +1,119 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+require 'socket'
+require 'yaml'
+
+vagrant_dir = File.expand_path(File.dirname(__FILE__))
+vconfig = YAML::load_file(vagrant_dir + "/settings.yaml")
+machines = YAML::load_file(vagrant_dir + "/machines.yaml")
+
+# How to prompt for a password
+module GetPass
+  def self.password
+    begin
+      system 'stty -echo'
+      print 'Password: '
+      ; pass = $stdin.gets.chomp; puts "\n"
+    ensure
+      system 'stty echo'
+    end
+    pass
+  end
+end
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+# Set email address to redirect mail to
+vagrant_email = ENV['VAGRANT_EMAIL'] || 'vagrant@vl1infra1-0.local.vm'
+
+
+# Setup /etc/hosts entries
+hosts = []
+machines.each do |vh|
+  hosts << "#{vh['ip']} vh['name'] vh['name']"
+end
+hosts_cmd = "#{hosts.join("\n")}"
+
+Vagrant.configure(2) do |config|
+
+ # config.vm.box = "bento/centos-6.7"
+  config.vm.box = "bento/centos-7.2"
+  #config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.provision :ansible do |ansible|
+    ansible.playbook = "site.yml"
+    ansible.inventory_path = "/Users/mdougherty/vag/vagrant-idaas/hosts"
+    ansible.sudo = true
+    end
+
+      machines.each do |vhost|
+    config.vm.define vhost['name'] do |vh|
+      #vh.vm.hostname = "vl1#{vhost['name']}.local.vm"
+      vh.vm.hostname = vhost['name']
+      vh.vm.network 'private_network', ip: vhost['ip']
+      vh.vm.provision 'shell', inline: HOSTS_FILE
+      vh.vm.provision 'shell', inline: DISABLE_SELINUX
+      vh.vm.provision 'shell', inline: CHANGE_SUDOERS
+
+      vh.vm.provider "virtualbox" do |v|
+        v.customize [
+          "modifyvm", :id,
+          "--natdnshostresolver1", "on",
+        ]
+      end
+
+      if !vhost['forwards'].nil?
+        vhost['forwards'].each do |fw|
+          vh.vm.network "forwarded_port", guest: fw['guest'], host: fw['host'], auto_correct: true
+        end
+      end
+    end
+  end
+
+  end
+
+HOSTS_FILE = <<SCRIPT
+echo '(HOSTS_FILE) Setup /etc/hosts'
+
+cat << EOF > /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+
+192.168.50.10   vl1infra1-0.local.vm vl1infra1-0
+
+# Infrastructure host
+#{vconfig['infra_ip']} vl1puppet1-0.local.vm vl1puppet1-0
+
+# Dynamically configured hosts
+#{hosts_cmd}
+
+EOF
+SCRIPT
+
+LOCAL_POSTFIX = <<SCRIPT
+echo '(LOCAL_POSTFIX) Postfix mail blackhole setup'
+echo "/.+@.+/ #{vagrant_email}" > /etc/postfix/virtual-regexp
+postmap /etc/postfix/virtual
+postmap /etc/postfix/virtual-regexp
+/etc/init.d/postfix reload
+SCRIPT
+
+RPM_BUILD_ENV = <<SCRIPT
+echo '(RPM_BUILD_ENV) Install RPM build environment tools'
+rpm -q --quiet rpm-build || yum -q -y install rpm-build
+rpm -q --quiet gcc || yum -q -y install gcc
+rpm -q --quiet vim-enhanced || yum -q -y install vim-enhanced
+SCRIPT
+
+DISABLE_SELINUX = <<SCRIPT
+setenforce 0
+sed -i s/SELINUX=enforcing/SELINUX=disabled/g /etc/sysconfig/selinux
+SCRIPT
+
+CHANGE_SUDOERS = <<SCRIPT
+echo "%appuser	ALL=(ALL)	NOPASSWD: ALL" >> /etc/sudoers
+SCRIPT
+
+
+
+
