@@ -133,7 +133,7 @@ Included:
 
      Find a way to collapse similar technologies.  The Wild West show should be coming to an end.  You don't need 4 different types of FTP server for example.  Find a way to limit the tech everyone needs to be an expert on daily and things will stablize and people can work on the cooler projects that they want. 
 
-     Get Gentoo the hell out of there :-)  Since everything has been custom compiled, a lift and replace effort should be fairly minimal.  That being said, my next pice of advise is to use more upstream technology.  Stop custom compiling and use the rpms that you are given.  If you can use the upstream rpms, build one yourself.  You are going to find that you can get your answers and fixes so much faster if you are not the oddball.
+     Get Gentoo the hell out of there :-)  Since everything has been custom compiled, a lift and replace effort should be fairly minimal.  That being said, my next piece of advice is to use more upstream technology.  Stop custom compiling and use the rpms that you are given.  If you can use the upstream rpms, build one yourself.  You are going to find that you can get your answers and fixes so much faster if you are not the oddball.
 
      Teach the project managers how they need to communicate.  Looking at some of the tickets that come in, I often felt like I needed a Rosetta Stone to make any sense of it.  Work with them on thier workflows and how you need to see the information as it comes in.  Believe me, this is a win-win for everyone involved.  You won't have to try to guess what the heck everyone is talking about, and they will get more tickets done because of it.  This is one that should be considered not only important, but very accomplishable.
 
@@ -144,4 +144,4 @@ Included:
 
  - Final thoughts
 
-     I am going to leave this repo up and I will contribute where I can.  Most of you have my personal number if you need some quick advise or guidance and I will be more than happy to help.  I want to let everyone know that if this weren't such a tremendous opportunity for myself and my family, I wouldn't have ever considered leaving.
+     I am going to leave this repo up and I will contribute where I can.  Most of you have my personal number if you need some quick advice or guidance and I will be more than happy to help.  I want to let everyone know that if this weren't such a tremendous opportunity for myself and my family, I wouldn't have ever considered leaving.
