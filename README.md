@@ -123,14 +123,12 @@ Included:
 
      Rotate your on-call duties.  I always found it most helpful when we used the following:
 
-############
 
        Point person on-call for 1 week.
          The person who is supposed to go on-call next is the escalation point.  Third is Clint.
        Person who was on-call the prior week has actionable duties.  (tickets that come in, elevations to staging, etc)
      So the rotation from your standpoint is ( Escalation Point => On-Call => Actionable Duties => Profit )
      This way, not everyone's phone rings all of the time and you get to learn a great deal about the environment for the week you are the "Action Point"
---------------
 
 
      Find a way to collapse similar technologies.  The Wild West show should be coming to an end.  You don't need 4 different types of FTP server for example.  Find a way to limit the tech everyone needs to be an expert on daily and things will stablize and people can work on the cooler projects that they want. 
